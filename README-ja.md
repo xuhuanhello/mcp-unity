@@ -156,6 +156,9 @@ MCP Unityは、Unityの`Library/PackedCache`フォルダーをワークスペー
 - `set_play_mode_status`: `play`（開始または再開）、`pause`（一時停止の切替）、`stop`（プレイモードの終了）、`step`（1 フレーム進める）で Unity のプレイモードを操作
   > **例:** "Unity のプレイモードを開始"、"ゲームを一時停止"、または "1 フレーム進めて"
 
+- `capture_screenshot`: Game ビューの画面をキャプチャし、AI が見られる画像として返す。`source`：`game_view`（既定。プレイモードでは全 UI を含む実際の合成フレーム、それ以外はすべてのカメラ + Screen Space - Overlay キャンバスを直接レンダリング）、`camera`（単一カメラ、Overlay UI なし）、`ui`（UI のみ、黒背景）。各キャプチャはフル解像度の PNG として `<プロジェクト>/.unity-mcp/screenshots/` に保存（検収の証跡として永続保存、上書きなし）。添付画像は `maxResolution`（既定 1024）に縮小したプレビューのみ。精密な確認には `includeImage: false` を指定し、AI はフル解像度の PNG を読む。または `region`（フル解像度ピクセル座標 `{x, y, width, height}`、原点は左上）を指定すると、その領域を 1:1 で切り出す
+  > **例:** "ゲーム画面のスクリーンショットを撮って"、"UI だけ見せて"
+
 ### MCPサーバーリソース
 
 - `unity://menu-items`: `execute_menu_item`ツールを容易にするために、Unityエディターで利用可能なすべてのメニュー項目のリストを取得

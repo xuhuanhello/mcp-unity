@@ -156,6 +156,7 @@ If no valid setting is found, Node falls back to:
 - `get_scene_info` — Get active scene info and loaded scenes list
 - `get_play_mode_status` — Get Unity play mode status (isPlaying, isPaused)
 - `set_play_mode_status` — Control Unity play mode (play, pause, stop, step)
+- `capture_screenshot` — Capture the Game view (or one camera, or UI only) and return it as an image
 - `unload_scene` — Unload scene from hierarchy
 - `get_gameobject` — Get detailed GameObject info
 - `get_console_logs` — Retrieve the entries shown in the Unity Console (incl. native engine messages)

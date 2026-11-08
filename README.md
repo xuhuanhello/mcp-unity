@@ -159,6 +159,9 @@ The following tools are available for manipulating and querying Unity scenes and
 - `set_play_mode_status`: Controls Unity play mode with actions: 'play' (start or unpause), 'pause' (toggle pause), 'stop' (exit play mode), 'step' (advance one frame)
   > **Example prompt:** "Start Unity play mode" or "Pause the game" or "Step forward one frame"
 
+- `capture_screenshot`: Captures what the Game view shows and returns it as an image the AI can see. `source`: `game_view` (default; in Play mode the real composited frame with all UI, otherwise a direct render of all cameras + Screen Space - Overlay canvases), `camera` (one camera, no overlay UI) or `ui` (UI only on a black background). Every capture is saved as a full-resolution PNG under `<project>/.unity-mcp/screenshots/` (persistent review evidence, never overwritten). The attached image is only a preview downscaled to `maxResolution` (default 1024); for precise checks pass `includeImage: false` and the AI reads the full-resolution PNG instead, or pass `region` (`{x, y, width, height}` in full-resolution pixels, origin top-left) to get that area cropped at 1:1
+  > **Example prompt:** "Take a screenshot of the game" or "Show me only the UI"
+
 ### MCP Server Resources
 
 - `unity://menu-items`: Retrieves a list of all available menu items in the Unity Editor to facilitate `execute_menu_item` tool

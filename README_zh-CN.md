@@ -156,6 +156,9 @@ MCP Unity 通过将 Unity `Library/PackedCache` 文件夹添加到您的工作�
 - `set_play_mode_status`: 使用操作 `play`（开始或继续）、`pause`（切换暂停）、`stop`（退出播放模式）、`step`（前进一帧）控制 Unity 播放模式
   > **示例提示:** "启动 Unity 播放模式"、"暂停游戏" 或 "前进一帧"
 
+- `capture_screenshot`: 截取 Game 视图画面并作为图片返回给 AI。`source`：`game_view`（默认；播放模式下为包含全部 UI 的真实合成帧，其他情况下直接渲染所有相机 + Screen Space - Overlay 画布）、`camera`（单个相机，不含 Overlay UI）或 `ui`（仅 UI，黑色背景）。每次截图都会以全分辨率 PNG 保存在 `<项目>/.unity-mcp/screenshots/`（持久保留作为验收证据，不会被覆盖）。附带的图片只是按 `maxResolution`（默认 1024）缩小的预览；需要精确检查时传 `includeImage: false`，AI 会改读全分辨率 PNG；或传 `region`（全分辨率像素坐标 `{x, y, width, height}`，原点在左上角），按 1:1 裁出该区域
+  > **示例提示:** "截一张游戏画面" 或 "只给我看 UI"
+
 ### MCP 服务器资源
 
 - `unity://menu-items`: 获取 Unity 编辑器中所有可用的菜单项列表，以方便 `execute_menu_item` 工具
