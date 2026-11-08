@@ -97,7 +97,7 @@ The following tools are available for manipulating and querying Unity scenes and
 - `get_gameobject`: Gets detailed information about a specific GameObject including all components
   > **Example prompt:** "Get the details of the Player GameObject"
 
-- `get_console_logs`: Retrieves logs from the Unity console with pagination support
+- `get_console_logs`: Retrieves the entries shown in the Unity Console window (newest first) with pagination support. Reads the Console itself, so native engine messages (e.g. graphics backend warnings) are included
   > **Example prompt:** "Show me the last 20 error logs from the Unity console"
 
 - `recompile_scripts`: Recompiles all scripts in the Unity project

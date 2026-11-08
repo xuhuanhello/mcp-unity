@@ -97,7 +97,7 @@ MCP Unity 通过将 Unity `Library/PackedCache` 文件夹添加到您的工作�
 - `get_gameobject`: 获取特定 GameObject 的详细信息，包括所有组件
   > **示例提示:** "获取 Player GameObject 的详细信息"
 
-- `get_console_logs`: 获取 Unity 控制台日志，支持分页
+- `get_console_logs`: 获取 Unity Console 窗口中显示的条目（最新的在前），支持分页。直接读取 Console 本身，因此包含引擎原生消息（例如图形后端警告）
   > **示例提示:** "显示 Unity 控制台最近的 20 条错误日志"
 
 - `save_scene`: 保存当前活动场景，支持另存为新路径

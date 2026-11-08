@@ -97,7 +97,7 @@ MCP Unityは、Unityの`Library/PackedCache`フォルダーをワークスペー
 - `get_gameobject`: すべてのコンポーネントを含む特定のGameObjectの詳細情報を取得
   > **例:** "Player GameObjectの詳細を取得"
 
-- `get_console_logs`: ページネーションをサポートしてUnityコンソールからログを取得
+- `get_console_logs`: Unity コンソールウィンドウに表示されているエントリを取得（新しい順、ページネーション対応）。コンソール自体を読むため、エンジンのネイティブメッセージ（グラフィックスバックエンドの警告など）も含む
   > **例:** "Unityコンソールから最新の20件のエラーログを表示"
 
 - `save_scene`: 現在のアクティブなシーンを保存（オプションで別名保存可能）

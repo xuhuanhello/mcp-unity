@@ -7,7 +7,7 @@ import { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
 
 // Constants for the tool
 const toolName = "get_console_logs";
-const toolDescription = "Retrieves logs from the Unity console with pagination support to avoid token limits";
+const toolDescription = "Retrieves the entries currently shown in the Unity Console window (newest first), with pagination to avoid token limits. Reads the Console itself, so it includes native engine messages (e.g. graphics backend warnings) and respects Console clears, but ignores the Console's own type toggles and search box. The result states the total entry count, so comparing totals before and after an action shows exactly which entries that action added.";
 const paramsSchema = z.object({
   logType: z
     .enum(["info", "warning", "error"])
