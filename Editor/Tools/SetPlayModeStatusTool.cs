@@ -33,14 +33,20 @@ namespace McpUnity.Tools
 
                 bool wasPlaying = EditorApplication.isPlaying;
                 bool wasPaused = EditorApplication.isPaused;
+                string transition = null; // set when a play mode change is still in progress
 
                 switch (action)
                 {
                     case "play":
                         if (!EditorApplication.isPlaying)
                         {
-                            // Start play mode
-                            EditorApplication.isPlaying = true;
+                            // Setting isPlaying fires ExitingEditMode synchronously, which stops this server and
+                            // drops the connection before this response is sent: the client times out and the
+                            // console logs "WebSocket error: An error has occurred in sending data". Enter Play
+                            // mode on the next editor tick instead, after the response has gone out.
+                            EditorApplication.update -= EnterPlayModeNextTick; // never queue it twice
+                            EditorApplication.update += EnterPlayModeNextTick;
+                            transition = "entering_play_mode";
                         }
                         else if (EditorApplication.isPaused)
                         {
@@ -67,6 +73,7 @@ namespace McpUnity.Tools
                         if (EditorApplication.isPlaying)
                         {
                             EditorApplication.isPlaying = false;
+                            transition = "exiting_play_mode"; // isPlaying still reads true until the frame ends
                         }
                         break;
 
@@ -91,21 +98,27 @@ namespace McpUnity.Tools
                         );
                 }
 
-                // Give Unity a moment to update state
                 bool isPlaying = EditorApplication.isPlaying;
                 bool isPaused = EditorApplication.isPaused;
+                string state = transition == "entering_play_mode" ? "Entering Play mode"
+                    : transition == "exiting_play_mode" ? "Exiting Play mode"
+                    : isPlaying ? (isPaused ? "Playing (paused)" : "Playing") : "Edit mode";
 
                 var result = new JObject
                 {
                     ["success"] = true,
                     ["type"] = "text",
-                    ["message"] = $"Action '{action}' executed. State: {(isPlaying ? (isPaused ? "Playing (paused)" : "Playing") : "Edit mode")}",
+                    ["message"] = $"Action '{action}' executed. State: {state}",
                     ["action"] = action,
                     ["wasPlaying"] = wasPlaying,
                     ["wasPaused"] = wasPaused,
                     ["isPlaying"] = isPlaying,
                     ["isPaused"] = isPaused
                 };
+                if (transition != null)
+                {
+                    result["transition"] = transition;
+                }
 
                 McpLogger.LogInfo($"Play mode action '{action}' executed. isPlaying={isPlaying}, isPaused={isPaused}");
 
@@ -117,6 +130,15 @@ namespace McpUnity.Tools
                     $"Error controlling play mode: {ex.Message}",
                     "play_mode_error"
                 );
+            }
+        }
+
+        private static void EnterPlayModeNextTick()
+        {
+            EditorApplication.update -= EnterPlayModeNextTick;
+            if (!EditorApplication.isPlaying)
+            {
+                EditorApplication.isPlaying = true;
             }
         }
     }

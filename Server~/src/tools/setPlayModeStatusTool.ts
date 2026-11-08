@@ -48,9 +48,13 @@ async function toolHandler(mcpUnity: McpUnity, params: any): Promise<CallToolRes
     );
   }
 
-  const statusText = response.isPlaying
-    ? (response.isPaused ? 'Playing (paused)' : 'Playing')
-    : 'Edit mode';
+  // A play mode change finishes after this response; report it as in progress, not the stale state.
+  const transitionText: Record<string, string> = {
+    entering_play_mode: 'Entering Play mode (the connection drops briefly while Unity reloads; confirm with get_play_mode_status)',
+    exiting_play_mode: 'Exiting Play mode (confirm with get_play_mode_status)'
+  };
+  const statusText = transitionText[response.transition]
+    ?? (response.isPlaying ? (response.isPaused ? 'Playing (paused)' : 'Playing') : 'Edit mode');
 
   return {
     content: [

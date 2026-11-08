@@ -111,6 +111,24 @@ describe('Play Mode Tools', () => {
       });
     });
 
+    it('reports an in-progress transition instead of the stale state', async () => {
+      registerSetPlayModeStatusTool(mockServer as any, mockMcpUnity as any, mockLogger as any);
+      const handler = mockServerTool.mock.calls[0][3] as (params: any) => Promise<any>;
+
+      mockSendRequest.mockResolvedValue({
+        success: true,
+        isPlaying: false,
+        isPaused: false,
+        action: 'play',
+        transition: 'entering_play_mode'
+      });
+
+      const result = await handler({ action: 'play' });
+
+      expect(result.content[0].text).toContain('Current state: Entering Play mode');
+      expect(result.content[0].text).not.toContain('Edit mode');
+    });
+
     it('rejects invalid actions before calling Unity', async () => {
       registerSetPlayModeStatusTool(mockServer as any, mockMcpUnity as any, mockLogger as any);
       const handler = mockServerTool.mock.calls[0][3] as (params: any) => Promise<any>;
